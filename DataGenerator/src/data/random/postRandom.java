@@ -1,4 +1,4 @@
-package stock;
+package data.random;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
-public class GetRandom {
+public class postRandom {
 	public static void main(String[] args) {
 		
 
@@ -112,7 +112,7 @@ public class GetRandom {
 				selectPrice = (double)getBetween(7000, 2300000)/100;
 			
 			return "'"+selectSide+"', '"+selectOrderDate+"', '"
-					+selectStatus+"', '"+getIsin()+"', '"+selectStock+"', '"+selectQuantity
+					+selectStatus+"', '" + "'" +selectStock+ "', '"+selectQuantity
 					+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 					+"', '"+getFirm()+"'";
 	}
@@ -136,7 +136,7 @@ public class GetRandom {
         String selectOrderDate = getOrderDate();
         
         return "'"+selectSide+"', '"+selectOrderDate+"', '"
-		+selectStatus+"', '"+getIsin()+"', '"+selectProduct+"', '"+selectQuantity
+		+selectStatus+"', '"+selectProduct+"', '"+selectQuantity
 		+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 		+"', '"+getFirm()+"'";
 
@@ -164,7 +164,7 @@ public class GetRandom {
 		String selectOrderDate = getOrderDate();
 		
         return "'"+selectSide+"', '"+selectOrderDate+"', '"
-		+selectStatus+"', '"+getIsin()+"', '"+selectBond+"', '"+selectQuantity
+		+selectStatus+"', '"+selectBond+"', '"+selectQuantity
 		+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 		+"', '"+getFirm()+"'";
         
