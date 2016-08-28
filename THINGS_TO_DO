@@ -1,0 +1,11 @@
+Things to do:
+
+	1. Implement the user-login window
+		1.1 Use hashCodes to verify the trader
+		1.2 If an entilted user -> create a user() object for the user. Based on the user() object's 
+		    parameter, using JPQL query only display the tradeinfo in the blotter for the trader's department.
+		1.3 Implement a logout method which deletes the user() object and presents the login screen.
+	2. In the trade blotter, on the C# side, provide "Subscription"(filtering) services.
+		2.1 C# client receives the whole JSON and based on the filtering, display the selected rows.
+	3. Messaging interface
+		3.1 Need to discuss

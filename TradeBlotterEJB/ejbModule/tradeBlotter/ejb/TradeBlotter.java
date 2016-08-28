@@ -27,10 +27,10 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 	
 	
 	
-    public List<User> addUser() {
+    public List<User> addUser(String name) {
 
 	     User user1 = new User();
-	     user1.setUserName("Ankur");
+	     user1.setUserName(name);
 	     em.persist(user1);
 	     List<User> users = new ArrayList<User>();
 	     users.add(user1);

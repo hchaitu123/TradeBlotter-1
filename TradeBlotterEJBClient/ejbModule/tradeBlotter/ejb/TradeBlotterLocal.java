@@ -11,7 +11,7 @@ import tradeBlotter.jpa.User;
 public interface TradeBlotterLocal {
 
 
-	public List<User> addUser();
+	public List<User> addUser(String name);
 	public List<TradeInfo> displayTradeInformation();
 	
 }

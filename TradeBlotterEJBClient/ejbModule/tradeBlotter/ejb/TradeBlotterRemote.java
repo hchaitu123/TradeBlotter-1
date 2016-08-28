@@ -10,7 +10,7 @@ import tradeBlotter.jpa.User;
 @Remote
 public interface TradeBlotterRemote {
 	
-	public List<User> addUser();
+	public List<User> addUser(String name);
 	public List<TradeInfo> displayTradeInformation();
 
 }
