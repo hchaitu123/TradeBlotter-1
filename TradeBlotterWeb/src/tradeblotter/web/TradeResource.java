@@ -48,7 +48,7 @@ public class TradeResource {
 		}
 		
 		@POST
-	    @Consumes("application/json") 
+	    @Consumes("application/x-www-form-urlencoded") 
 	    @Produces("text/plain")
 	    public String addPlayer(@FormParam("playerName")String playerName,
 	                            @FormParam("team")@DefaultValue("Swansea")String team) {
