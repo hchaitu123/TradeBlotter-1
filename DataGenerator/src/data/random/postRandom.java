@@ -1,5 +1,10 @@
 package data.random;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -21,9 +26,7 @@ public class postRandom {
 		/
 		*/
 
-
-
-
+		
 
 		//List<String> list = new ArrayList<String>();
 		int choice = getBetween(0, 2);
@@ -33,14 +36,17 @@ public class postRandom {
 			case 0:
 				query = getStockQuery();
 				System.out.println("IN STOCK");
+				System.out.println(query);
 				break;
 			case 1:
 				query = getFxQuery();
 				System.out.println("IN FX");
+				System.out.println(query);
 				break;
 			case 2:
 				query = getBondQuery();
 				System.out.println("IN BOND");
+				System.out.println(query);
 				break;
 		}
 
@@ -50,7 +56,7 @@ public class postRandom {
 		/
 		*/
 
-		System.out.println("UPDATE table VALUES ('"+ generateTradeId() +"', "+ query + ")");
+//		System.out.println("UPDATE table VALUES ('"+ generateTradeId() +"', "+ query + ")");
 	
 
 	}
@@ -111,7 +117,7 @@ public class postRandom {
 			else
 				selectPrice = (double)getBetween(7000, 2300000)/100;
 			
-			return "'"+selectSide+"', '"+selectOrderDate+"', '"
+			return generateTradeId()+"', '"+selectSide+"', '"+selectOrderDate+"', '"
 					+selectStatus+"', '" + "'" +selectStock+ "', '"+selectQuantity
 					+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 					+"', '"+getFirm()+"'";
@@ -135,8 +141,8 @@ public class postRandom {
 	
         String selectOrderDate = getOrderDate();
         
-        return "'"+selectSide+"', '"+selectOrderDate+"', '"
-		+selectStatus+"', '"+selectProduct+"', '"+selectQuantity
+        return generateTradeId()+"', '"+selectSide+"', '"+selectOrderDate+"', '"
+		+selectStatus+"', '" + "'" +selectProduct+ "', '"+selectQuantity
 		+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 		+"', '"+getFirm()+"'";
 
@@ -163,8 +169,8 @@ public class postRandom {
 		double selectPrice = (double)getBetween(9800,10600)/100;
 		String selectOrderDate = getOrderDate();
 		
-        return "'"+selectSide+"', '"+selectOrderDate+"', '"
-		+selectStatus+"', '"+selectBond+"', '"+selectQuantity
+        return generateTradeId()+"', '"+selectSide+"', '"+selectOrderDate+"', '"
+		+selectStatus+"', '" + "'" +selectBond+ "', '"+selectQuantity
 		+ "', '"+selectPrice+"', '"+selectVolume+"', '"+getTerms()+"', '"+getTraderId()
 		+"', '"+getFirm()+"'";
         
@@ -174,32 +180,53 @@ public class postRandom {
 
 		//check in the database for the value of tradeID in the last row of the tradeInformation.
 				//----> Query the database using jdbc
+		Connection connection = null;
+		String tradeId = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/mydatabase?user=root&password=password");
+			
+			String sqlQuery = "SELECT * FROM tradedata ORDER BY tradeID DESC LIMIT 1;";
+			Statement st = connection.createStatement();
+		    ResultSet rs = st.executeQuery(sqlQuery);
+		    
+		    //To position the cursor to the resultset starting columns.
+		    
+		    rs.next();
+			System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3) + rs.getString(4) + rs.getString(5) + rs.getString(6) );
+		
+			tradeId = rs.getString(1);
+			
+			String firstPart  = "CXIAD";
+			String secondPart = tradeId.replaceAll("[^0-9]", "");
+			
+			//parse the int from the last tradeID value
+			int secondPartInt = Integer.parseInt(secondPart);
+			
+			//randomly add a small number to it... in the range of 1-10
+			int addRandomNum = getBetween(1,10);
+			secondPartInt += addRandomNum;
+			
+			secondPart = Integer.toString(secondPartInt);
+			
+			//combine the firstpart and the secondpart
+			tradeId = firstPart + secondPart;
+			
+			return tradeId;
+					
+			
+			
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+         return tradeId;
+       
 
-		Class.forName("");
-		Connection connection = DriverManager.getConnection(URL);
-		connection.executeQuery(SQL_query);
-		//access the resultset
-
-		String firstPart  = "CXIAD";
-		String secondPart = "10000002";
-
-		//parse the int from the last tradeID value
-
-		int parsed_int = Integer.ParseInt(tradeID_from_DB);
-
-
-		//randomly add a small number to it... in the range of 1-10
-		parsed_int += getBetween(1,10);
-
-
-		//combine the firstpart and the secondpart
-		tradeID = firstpart_parsed_from_tradeID + parsed_int;
-
-
-
-
-		//Based on the last tradeID value, generate a new value which is greater than the previous value.
-		return tradeID;
 
 
 
