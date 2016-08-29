@@ -523,21 +523,18 @@ while(true){
 			date = rs.getString(3);
 			
 			int year = Integer.parseInt(date.substring(0, 4));
-			int month = Integer.parseInt(date.substring(5, 7));
+			int month = Integer.parseInt(date.substring(5, 7))-1;
 			int day = Integer.parseInt(date.substring(8, 10));
 			int hour = Integer.parseInt(date.substring(11, 13));
 			int minute = Integer.parseInt(date.substring(14, 16));
 			int second = Integer.parseInt(date.substring(17, 19));
 			gc.set(year, month, day, hour, minute, second);
 			
-			Calendar cal = gc;
 			//Roll date by 5 to 50 seconds
-			int limit = getBetween(5, 50);
-			for (int i=0; i<limit; i++)
-				cal.roll(Calendar.SECOND, true);
+			gc.add(Calendar.SECOND, getBetween(5, 50));
 
 			return ""+gc.get(Calendar.YEAR)+"-"+
-	        ""+concatZero(gc.get(Calendar.MONTH))+"-"+
+	        ""+concatZero(gc.get(Calendar.MONTH)+1)+"-"+
 	        ""+concatZero(gc.get(Calendar.DATE))+" "+
 	        ""+concatZero(gc.get(Calendar.HOUR))+":"+
 	        ""+concatZero(gc.get(Calendar.MINUTE))+":"+
