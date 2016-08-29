@@ -35,16 +35,13 @@ public class TradeResource {
 		}
 		
 		@GET
-		@Produces("application/json")
-		public List<TradeInfo> displayTradeInfo() {
+		@Produces("application/text")
+		public String displayTradeInfo() {
 
-			if (bean == null) {
-				return null;
-				}
 			
-			else {
-				return bean.displayTradeInformation();
-			}
+				bean.dummyDataGenerator();
+				return "sdasdasd";
+			
 		}
 		
 		@POST

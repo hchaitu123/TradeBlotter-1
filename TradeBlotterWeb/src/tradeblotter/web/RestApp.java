@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application; 
+import javax.ws.rs.core.Application;
+
+import tradeBlotter.ejb.DummyData; 
 
 @ApplicationPath("/rest")
 public class RestApp extends Application {
@@ -15,6 +17,8 @@ public class RestApp extends Application {
 	
 	public RestApp(){
 	     singletons.add(new TradeResource());
+	     singletons.add(new DummyData());
+	     
 	}
 	
 	@Override

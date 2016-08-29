@@ -106,7 +106,7 @@ while(true){
 		        				
 		        				try {
 									
-									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 							        PreparedStatement ps = connection.prepareStatement(sql);
 							        
@@ -141,7 +141,7 @@ while(true){
 		        				
 		        				try {
 									
-									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
 							        PreparedStatement ps = connection.prepareStatement(sql);
 							        
@@ -177,7 +177,7 @@ while(true){
 		        				
 		        				try {
 									
-									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+									String sql = "INSERT INTO tradedata VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 							        PreparedStatement ps = connection.prepareStatement(sql);
 							        
@@ -294,7 +294,7 @@ while(true){
 			rowOfData.add(Double.toString(selectPrice));
 			rowOfData.add(Integer.toString(selectVolume));
 			rowOfData.add(getTerms());
-			rowOfData.add(getTraderId());
+			rowOfData.add(getTraderId(1));
 			rowOfData.add(getFirm());
 			
 			return rowOfData;
@@ -312,8 +312,12 @@ while(true){
 		String selectProduct = currencyPairArray[index1];
 		
 		String p = price[index1];
-		String first = p.substring(0,p.length() - 2);
-		String selectPrice = first + getBetween(10,99);
+		double priceDouble = Double.parseDouble(p);
+		priceDouble += priceDouble*getBetween(10,20)/1000;
+		
+//		String first = p.substring(0,p.length() - 2);
+		System.out.println(Double.toString(priceDouble));
+		String selectPrice = Double.toString(priceDouble);
 		int selectVolume = getBetween(1000, 10000);
 		int selectQuantity = getBetween(100, selectVolume);
 		String selectSide = getSide();
@@ -331,7 +335,7 @@ while(true){
 		rowOfData.add(selectPrice);
 		rowOfData.add(Integer.toString(selectVolume));
 		rowOfData.add(getTerms());
-		rowOfData.add(getTraderId());
+		rowOfData.add(getTraderId(2));
 		rowOfData.add(getFirm());
 		
 		return rowOfData;
@@ -370,7 +374,7 @@ while(true){
 		rowOfData.add(Double.toString(selectPrice));
 		rowOfData.add(Integer.toString(selectVolume));
 		rowOfData.add(getTerms());
-		rowOfData.add(getTraderId());
+		rowOfData.add(getTraderId(3));
 		rowOfData.add(getFirm());
 		
 		return rowOfData;
@@ -403,7 +407,7 @@ while(true){
 		rowOfData.add(selectPrice);
 		rowOfData.add(Integer.toString(selectVolume));
 		rowOfData.add(getTerms());
-		rowOfData.add(getTraderId());
+		rowOfData.add(getTraderId(4));
 		rowOfData.add(getFirm());
 		
 		return rowOfData;
@@ -486,7 +490,7 @@ while(true){
 		return "N";
 	}
 	
-	public static String getTraderId() {
+	public static String getTraderId(int type) {
 
 
 		String[] traderIDs = {"EQ41252","EQ41272","EQ41392","EQ47232","EQ49952",
@@ -494,7 +498,26 @@ while(true){
 				"BN41252","BN41272","BN41392","BN47232","BN49952",
 				"TB41252","TB41272","TB41392","TB47232","TB49952"};
 
-		return traderIDs[getBetween(0,traderIDs.length - 1)];
+		
+		switch(type){
+		case 1:
+			return traderIDs[getBetween(0,4)];
+			
+		case 2:
+			return traderIDs[getBetween(5,9)];
+			
+		case 3:
+			return traderIDs[getBetween(10,14)];
+			
+		case 4:
+			return traderIDs[getBetween(15,19)];
+			
+		default:
+			return "null";
+		}
+		
+		
+		
 	}
 	
 	public static String getFirm() {
