@@ -18,7 +18,7 @@ public class RestApp extends Application {
 	public RestApp(){
 	     singletons.add(new TradeResource());
 	     singletons.add(new DummyData());
-	     
+	     singletons.add(new ChatResource());
 	}
 	
 	@Override

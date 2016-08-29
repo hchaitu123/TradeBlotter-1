@@ -49,8 +49,6 @@ public class Login implements LoginRemote, LoginLocal {
 		System.out.println(userData.get(0));
 		User LoginUser = userData.get(0);
 		String userPassword = LoginUser.getPassword();
-		System.out.println(userPassword);
-		System.out.println(password);
 		if(password.equals(userPassword)){
 			loginBool = true;
 			System.out.println("password match");
