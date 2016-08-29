@@ -45,6 +45,12 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 	
 	//Implementing the persistence of dummyData entity bean
 	
+	
+	public boolean userLogin(String userID, String password){
+		
+		return true;
+	}
+	
 	public void dummyDataGenerator(){
 		
 			new java.util.Timer().schedule( 
@@ -186,7 +192,7 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 			rowOfData.add(Integer.toString(selectQuantity));
 			rowOfData.add(Double.toString(selectPrice));
 			rowOfData.add(Integer.toString(selectVolume));
-			rowOfData.add(getTerms());
+			rowOfData.add(getTerms(selectOrderDate));
 			rowOfData.add(getTraderId(1));
 			rowOfData.add(getFirm());
 			
@@ -227,7 +233,7 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 		rowOfData.add(Integer.toString(selectQuantity));
 		rowOfData.add(selectPrice);
 		rowOfData.add(Integer.toString(selectVolume));
-		rowOfData.add(getTerms());
+		rowOfData.add(getTerms(selectOrderDate));
 		rowOfData.add(getTraderId(2));
 		rowOfData.add(getFirm());
 		
@@ -249,6 +255,8 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 				"NTPC LTD","PNB HOUSING FINANCE LTD","POWER FINANCE CORPORATION LTD","RURAL ELECTRIFICATION CORPORATION LIMITED",
 				"RURAL ELECTRIFICATION CORPORATION OF INDIA","RURUAL ELECTRIFICATION CORPORATION LTD","SYNDICATE BANK",
 				"TAMIL NADU GENERATION AND DISTRIBUTION CORPORATION LIMITED","TATA POWER COMPANY LIMITED","TATA STEEL LIMITED"};
+		
+		
 		String selectBond = bondArray[getBetween(0,bondArray.length-1)];
 		String selectSide = getSide();
 		String selectStatus = getStatus();
@@ -266,7 +274,7 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 		rowOfData.add(Integer.toString(selectQuantity));
 		rowOfData.add(Double.toString(selectPrice));
 		rowOfData.add(Integer.toString(selectVolume));
-		rowOfData.add(getTerms());
+		rowOfData.add(getTerms(selectOrderDate));
 		rowOfData.add(getTraderId(3));
 		rowOfData.add(getFirm());
 		
@@ -299,7 +307,7 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 		rowOfData.add(Integer.toString(selectQuantity));
 		rowOfData.add(selectPrice);
 		rowOfData.add(Integer.toString(selectVolume));
-		rowOfData.add(getTerms());
+		rowOfData.add(getTerms(selectOrderDate));
 		rowOfData.add(getTraderId(4));
 		rowOfData.add(getFirm());
 		
@@ -319,17 +327,18 @@ public class TradeBlotter implements TradeBlotterRemote, TradeBlotterLocal {
 //			String sqlQuery = "SELECT * FROM tradedata ORDER BY tradeID DESC LIMIT 1;";
 
 
-int counter = 0;
+		int counter = 0;
+		
+		//To position the cursor to the resultset starting columns.
+		for(TradeInfo t : tradeData){
+			if(counter==0){
+				System.out.println(t.getTradeID() + t.getTradeType() + t.getSubmissionDate() + t.getStatus() + t.getIsin() + t.getProduct() + t.getQuantity() + t.getPrice() + t.getQuoteVolume() + t.getTerms() + t.getTraderID() + t.getFirmName() );
+		
+				tradeId = t.getTradeID();
+				counter=1;
+				}
 
-//To position the cursor to the resultset starting columns.
-for(TradeInfo t : tradeData){
-	if(counter==0){
-System.out.println(t.getTradeID() + t.getTradeType() + t.getSubmissionDate() + t.getStatus() + t.getIsin() + t.getProduct() + t.getQuantity() + t.getPrice() + t.getQuoteVolume() + t.getTerms() + t.getTraderID() + t.getFirmName() );
-
-tradeId = t.getTradeID();
-counter=1;}
-
-}
+			}
 		
 		
 		
@@ -354,14 +363,7 @@ counter=1;}
 		tradeId = firstPart + secondPart;
 		
 		return tradeId;
-        
-       
-
-
-
-
-
-		
+        	
 	}
 	
 	public static String getSide() {
@@ -378,14 +380,31 @@ counter=1;}
 		
 	public static String getIsin() {
 		return "Isin";
-
 	}*/
 	
-	public static String getTerms() {
+	public static String getTerms(String orderDate) {
 
-	// Find out what terms actually are
+	Calendar gc = new GregorianCalendar();
+		String date = orderDate;
+		
+		int year = Integer.parseInt(date.substring(0, 4));
+		int month = Integer.parseInt(date.substring(5, 7))-1;
+		int day = Integer.parseInt(date.substring(8, 10));
+		int hour = Integer.parseInt(date.substring(11, 13));
+		int minute = Integer.parseInt(date.substring(14, 16));
+		int second = Integer.parseInt(date.substring(17, 19));
+		gc.set(year, month, day, hour, minute, second);
 
-		return "N";
+		//Roll date by 60 days and few seconds
+		gc.add(Calendar.DATE, 60);
+		gc.add(Calendar.SECOND, getBetween(5000, 10000));
+
+		return ""+gc.get(Calendar.YEAR)+"-"+
+        ""+concatZero(gc.get(Calendar.MONTH)+1)+"-"+
+        ""+concatZero(gc.get(Calendar.DATE))+" "+
+        ""+concatZero(gc.get(Calendar.HOUR))+":"+
+        ""+concatZero(gc.get(Calendar.MINUTE))+":"+
+        ""+concatZero(gc.get(Calendar.SECOND));
 	}
 	
 	public static String getTraderId(int type) {
@@ -440,20 +459,19 @@ counter=1;}
 		
 		
 		
-
-int counter = 0;
+		int counter = 0;
 
 		
 		//To position the cursor to the resultset starting columns.
 		for(TradeInfo t : tradeData){
 		
-		if(counter==0){	
-		System.out.println(t.getTradeID() + t.getTradeType() + t.getSubmissionDate() + t.getStatus() + t.getIsin() + t.getProduct() + t.getQuantity() + t.getPrice() + t.getQuoteVolume() + t.getTerms() + t.getTraderID() + t.getFirmName() );
-		
-		date = t.getSubmissionDate();
-		counter=1;
-		}
-		
+			if(counter==0){	
+			System.out.println(t.getTradeID() + t.getTradeType() + t.getSubmissionDate() + t.getStatus() + t.getIsin() + t.getProduct() + t.getQuantity() + t.getPrice() + t.getQuoteVolume() + t.getTerms() + t.getTraderID() + t.getFirmName() );
+			
+			date = t.getSubmissionDate();
+			counter=1;
+			}
+			
 		}
 		
 		
@@ -479,14 +497,7 @@ int counter = 0;
 		
 		
 		
-		
-		
-		//-----
-		
-		//The previously hardcoded date --- not in use
-		
-//		String date = "2007-09-12 01:01:01";
-		
+	
 		
 	}
 	
@@ -505,28 +516,7 @@ int counter = 0;
 	
 	
 	//---------------------------------------
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
     public List<User> addUser(String name) {
 
 	     User user1 = new User();
@@ -632,5 +622,3 @@ int counter = 0;
 //	        }
 //	    }
 	
-
-

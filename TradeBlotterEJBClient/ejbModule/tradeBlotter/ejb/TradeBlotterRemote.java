@@ -13,5 +13,6 @@ public interface TradeBlotterRemote {
 	public List<User> addUser(String name);
 	public List<TradeInfo> displayTradeInformation();
 	public void dummyDataGenerator();
+	
 
 }
